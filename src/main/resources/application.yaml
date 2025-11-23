@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: payment
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=public
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+  batch:
+    jdbc:
+      initialize-schema: never
+  task:
+    scheduling:
+      cron:
+        settlement: ${SETTLEMENT_CRON:-}
+api:
+  v1: /api/v1
+settlement:
+  async:
+    enabled: ${SETTLEMENT_ASYNC:false}
+    pool-size: ${SETTLEMENT_ASYNC_POOL_SIZE:5}
+payment:
+  toss:
+    secret-key: test_sk_DLJOpm5QrlwlzyBnEDEAVPNdxbWn
+    success-url: ${TOSS_SUCCESS_URL:http://localhost:8080/payments/success.html}
+    fail-url: ${TOSS_FAIL_URL:http://localhost:8080/payments/fail.html}
